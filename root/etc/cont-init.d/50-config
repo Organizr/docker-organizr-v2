@@ -1,0 +1,42 @@
+#!/usr/bin/with-contenv bash
+
+# set envs for migration purposes
+old_location=/config/www
+new_location=/config/organizr
+
+# create directory structure
+mkdir -p \
+/config/organizr
+
+# create symlinks
+symlinks=(\
+    /var/www/html/api/config/config.php
+)
+
+for i in "${symlinks[@]}"; do
+    [[ -e $i && ! -L $i ]] && rm -rf "$i"
+    [[ ! -L $i ]] && ln -s /config/organizr/"$(basename "$i")" "$i"
+done
+
+# migrate old installs - if set up using defaults on prior versions where app is installed in /config/www/Dashboard
+if [ -d /config/www/db/ ] && [ ! -f /config/.migrated ]; then
+    echo "**** running migration ****"
+    apk add --no-cache --virtual=build-dependencies rsync
+    rsync -av $old_location/ $new_location --exclude Dashboard
+    cp $old_location/Dashboard/api/config/config.php $new_location/config.php
+    sed -i "s;'dbLocation' => .*;'dbLocation' => '$new_location/db/',;g" $new_location/config.php
+    cp /defaults/default /config/nginx/site-confs/default
+    touch /config/.migrated
+    apk del --purge build-dependencies
+fi
+
+# Make sure the config.php file is using the correct branch
+sed -i "s;'branch' => .*;'branch' => 'v2-master',;g" /config/organizr/config.php
+
+# Docker.txt file for Organizr check
+touch /var/www/html/Docker.txt
+
+# permissions
+chown -R abc:abc \
+/config \
+/var/www/html

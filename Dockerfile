@@ -1,13 +1,17 @@
 FROM lsiobase/alpine.nginx:3.8
-MAINTAINER OrganizrTools
 
-# Set version label
+# set version label
+ARG ORGANIZR_COMMIT
 ARG BUILD_DATE
 ARG VERSION
 
-# Install packages
+LABEL build_version="OrganizrTools version:- ${VERSION} Build-date:- ${BUILD_DATE}"
+LABEL maintainer="OrganizrTools"
+
+# install packages
 RUN \
- apk add --no-cache \
+echo "**** install runtime packages ****" && \
+apk add --no-cache \
 	curl \
 	php7-curl \
 	php7-ldap \
@@ -15,12 +19,28 @@ RUN \
 	php7-sqlite3 \
 	php7-session \
 	php7-zip \
-  php7-xmlrpc \
-  mediainfo
+	php7-xmlrpc \
+	mediainfo && \
+echo "**** fetch organizr ****" && \
+mkdir -p\
+	/var/www/html && \
+if [ -z ${ORGANIZR_COMMIT+x} ]; then \
+	ORGANIZR_COMMIT=$(curl -sX GET "https://api.github.com/repos/causefx/Organizr/branches/v2-master" \
+	| awk '/sha/{print $4;exit}' FS='[""]'); \
+fi && \
+curl -o \
+	/tmp/organizr.tar.gz -L \
+	"https://github.com/causefx/Organizr/archive/${ORGANIZR_COMMIT}.tar.gz" && \
+tar xf \
+	/tmp/organizr.tar.gz -C \
+	/var/www/html/ --strip-components=1 && \
+echo "**** cleanup ****" && \
+rm -rf \
+	/root/.compose
 
-# Add local files
+# add local files
 COPY root/ /
 
-# Ports and volumes
+# ports and volumes
 EXPOSE 80
 VOLUME /config
