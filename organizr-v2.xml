@@ -3,33 +3,30 @@
   <TemplateURL>https://raw.githubusercontent.com/organizrTools/docker-organizr-v2/master/organizr-v2.xml</TemplateURL>
   <Beta>False</Beta>
   <Category>Tools: Network:Web Network:Proxy Network:Other</Category>
-  <Date>2017-03-11</Date>
-<Changes>
-  [center][img width='300px' src='https://raw.githubusercontent.com/causefx/Organizr/v2-master/plugins/images/organizr/logo-no-border.png'][/center]
-
-  [center][font size=4]Organizr Change Log[/font][/center]
-  [b]03.01.2019:[/b] Official Release.
-  [b]11.03.2017:[/b] Initial Beta Release.
-  </Changes>
+  <Date>2020-02-23</Date>
   <Name>organizrv2</Name>
   <Project>https://github.com/causefx/Organizr</Project>
-  <Support>https://www.reddit.com/r/organizr/</Support>
+  <Support>https://forums.unraid.net/topic/89015-support-organizrtools-organizr-v2/</Support>
   <Repository>organizrtools/organizr-v2</Repository>
   <Registry>https://hub.docker.com/r/organizrtools/organizr-v2/</Registry>
   <Network>bridge</Network>
   <Privileged>false</Privileged>
   <Overview>HTPC/Homelab Services Organizer - Written in PHP</Overview>
   <Branch>
-  <Tag>latest</Tag>
-  <TagDescription>Stable Master</TagDescription>
+    <Tag>latest</Tag>
+    <TagDescription>Stable Master</TagDescription>
   </Branch>
   <Branch>
-  <Tag>php-fpm</Tag>
-  <TagDescription>PHP-FPM tweaks</TagDescription>
+    <Tag>php-fpm</Tag>
+    <TagDescription>PHP-FPM tweaks</TagDescription>
   </Branch>
   <Branch>
-  <Tag>dev-php-fpm</Tag>
-  <TagDescription>Dev PHP-FPM tweaks</TagDescription>
+    <Tag>dev-latest</Tag>
+    <TagDescription>Developer build</TagDescription>
+  </Branch>
+  <Branch>
+    <Tag>dev-php-fpm</Tag>
+    <TagDescription>Dev PHP-FPM tweaks</TagDescription>
   </Branch>
   <WebUI>http://[IP]:[PORT:80]/</WebUI>
   <Icon>https://raw.githubusercontent.com/causefx/Organizr/v2-master/plugins/images/organizr/logo-no-border.png</Icon>
@@ -39,7 +36,6 @@
 [b]/config[/b] : Storing all organizr config files [br]&#xD;
 </Description>
   <Networking>
-    <Mode>bridge</Mode>
     <Publish>
       <Port>
         <HostPort></HostPort>
@@ -68,5 +64,5 @@
 <DonateText>Donations</DonateText>
 <DonateLink>https://paypal.me/causefx</DonateLink>
 <DonateImg>https://raw.githubusercontent.com/organizrTools/docker-organizr-v2/master/images/donate.png</DonateImg>
-<BaseImage>lsiobase/alpine.nginx:3.9</BaseImage>
+<BaseImage>lsiobase/alpine.nginx:3.10</BaseImage>
 </Container>
